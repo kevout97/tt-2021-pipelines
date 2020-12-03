@@ -51,6 +51,19 @@ pipeline{
         label "${AGENT_LABEL}"
     }
     stages{
+        stage("Clean old container and old image"){
+            steps{
+                catchError([buildResult: "SUCCESS"]){
+                    sh """
+                        docker rm -f ${env.JOB_NAME}
+                    """
+                    sh'''
+                        docker rmi -f $(docker images | grep "${env.JOB_NAME}" | '{print $1":"$2}')
+                    '''
+                }
+            }
+        }
+
         stage("Clonning Source Code"){
             steps{
                 sh"""
@@ -96,19 +109,6 @@ pipeline{
                         echo "Scanning source code"
                         sleep 15
                     }
-                }
-            }
-        }
-
-        stage("Prepare new deploy"){
-            steps{
-                catchError([buildResult: "SUCCESS"]){
-                    sh """
-                        docker rm -f ${env.JOB_NAME}
-                    """
-                    sh'''
-                        docker rmi -f $(docker images | grep tt-2021 | '{print $1":"$2}')
-                    '''
                 }
             }
         }
