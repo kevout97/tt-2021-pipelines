@@ -107,7 +107,7 @@ pipeline{
                         docker rm -f ${env.JOB_NAME}
                     """
                     sh'''
-                        docker rmi -f $(docker images | grep tt-2021 | awk '{print $3}')
+                        docker rmi -f $(docker images | grep tt-2021 | '{print $1":"$2}')
                     '''
                 }
             }
