@@ -41,9 +41,12 @@ pipeline{
         stage("Clonning Source Code"){
             steps{
                 sh"""
-                    rm -rf *
+                    rm -rf ${GIT_PROYECT}
+                    mkdir ${GIT_PROYECT}
                 """
-                git credentialsId: "${GIT_CREDENTIAL}" , url: "${GIT_URL}", branch: "${GIT_BRANCH}"
+                dir("${GIT_PROYECT}"){
+                    git credentialsId: "${GIT_CREDENTIAL}" , url: "${GIT_URL}", branch: "${GIT_BRANCH}"
+                }
             }
         }
 
@@ -52,9 +55,11 @@ pipeline{
                 sh"""
                     ls -lha
                 """
-                script {
-                    def customImage = docker.build("${JOB_NAME}:v${env.BUILD_ID}")
-                    // customImage.push()
+                dir("${GIT_PROYECT}"){
+                    script {
+                        def customImage = docker.build("${JOB_NAME}:v${env.BUILD_ID}")
+                        // customImage.push()
+                    }
                 }
             }
         }
