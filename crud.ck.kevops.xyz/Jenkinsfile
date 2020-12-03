@@ -105,7 +105,7 @@ pipeline{
                 catchError([buildResult: "SUCCESS"]){
                     sh"""
                         docker rm -f ${env.JOB_NAME}
-                        docker system prune -af
+                        docker rmi -f \$(docker images | grep tt-2021 | awk '{print $3}')
                     """
                 }
             }
