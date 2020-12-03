@@ -115,19 +115,7 @@ pipeline{
             steps{
                 script{
                     def customImage = docker.image("${env.JOB_NAME}:v${env.BUILD_ID}")
-                    customImage.run("""
-                        -itd
-                        --name $TT_CONTAINER
-                        --restart unless-stopped
-                        -p $TT_PORT:$TT_PORT
-                        -v /etc/localtime:/etc/localtime:ro
-                        -e TT_PORT=$TT_PORT
-                        -e TT_DBDATABASE=$TT_DBDATABASE
-                        -e TT_DBHOST=$TT_DBHOST
-                        -e TT_DBPORT=$TT_DBPORT
-                        -e TT_DBUSER=$TT_DBUSER
-                        -e TT_DBPASSWORD=$TT_DBPASSWORD
-                    """)
+                    customImage.run("-itd --name $TT_CONTAINER --restart unless-stopped -p $TT_PORT:$TT_PORT -v /etc/localtime:/etc/localtime:ro -e TT_PORT=$TT_PORT -e TT_DBDATABASE=$TT_DBDATABASE -e TT_DBHOST=$TT_DBHOST -e TT_DBPORT=$TT_DBPORT -e TT_DBUSER=$TT_DBUSER -e TT_DBPASSWORD=$TT_DBPASSWORD")
                 }
             }
         }
