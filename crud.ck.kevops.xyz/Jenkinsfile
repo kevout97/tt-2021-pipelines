@@ -55,11 +55,11 @@ pipeline{
             steps{
                 catchError([buildResult: "SUCCESS"]){
                     sh """
-                        docker rm -f ${env.JOB_NAME}
+                        docker rm -f ${TT_CONTAINER}
                     """
-                    sh'''
-                        docker rmi -f $(docker images | grep "${env.JOB_NAME}" | '{print $1":"$2}')
-                    '''
+                    sh"""
+                        docker rmi -f \$(docker images | grep ${env.JOB_NAME} | '{print $1":"$2}')
+                    """
                 }
             }
         }
