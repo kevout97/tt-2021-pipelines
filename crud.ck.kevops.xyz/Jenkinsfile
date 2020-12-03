@@ -103,10 +103,10 @@ pipeline{
         stage("Prepare new deploy"){
             steps{
                 catchError([buildResult: "SUCCESS"]){
-                    sh"""
-                        docker rm -f ${env.JOB_NAME}
-                        docker rmi -f \\$(docker images | grep tt-2021 | awk '{print $3}')
-                    """
+                    sh'''
+                        docker rm -f "${env.JOB_NAME}"
+                        docker rmi -f $(docker images | grep tt-2021 | awk '{print $3}')
+                    '''
                 }
             }
         }
