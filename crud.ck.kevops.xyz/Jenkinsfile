@@ -102,10 +102,12 @@ pipeline{
 
         stage("Prepare new deploy"){
             steps{
-                sh"""
-                    docker rm -f ${env.JOB_NAME}
-                    docker system prune -af
-                """
+                catchError {
+                    sh"""
+                        docker rm -f ${env.JOB_NAME}
+                        docker system prune -af
+                    """
+                }
             }
         }
 
