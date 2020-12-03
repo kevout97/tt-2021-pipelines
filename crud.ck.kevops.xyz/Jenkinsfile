@@ -58,7 +58,7 @@ pipeline{
                         docker rm -f ${TT_CONTAINER}
                     """
                     sh """
-                        docker rmi -f \$(docker images | grep ${env.JOB_NAME} | '{print \$1\":\"\$2}')"
+                        docker rmi -f \$(docker images | grep ${env.JOB_NAME} | '{print \$1\":\"\$2}')
                     """
                 }
             }
