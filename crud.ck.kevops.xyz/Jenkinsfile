@@ -108,12 +108,12 @@ pipeline{
     post{
         success{
             sh """
-                curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text=✅ La ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} ha sinalizado con éxito ✅' ${BOT_URL}
+                curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text=✅ La ejecución del Job: <b>${env.JOB_NAME}</b> numero <b>${env.BUILD_ID}</b> ha sinalizado con éxito ✅' ${BOT_URL}
             """
         }
         failure{
             sh """
-                curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text=🚨 Ocurrió un problema durante la ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} 🚨' ${BOT_URL}
+                curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text=🚨 Ocurrió un problema durante la ejecución del Job: <b>${env.JOB_NAME}</b> numero <b>${env.BUILD_ID}</b> 🚨' ${BOT_URL}
             """
         }
     }
