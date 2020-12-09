@@ -43,6 +43,16 @@ withCredentials([usernamePassword(credentialsId: 'tt-mysql-credential', username
     TT_DBPASSWORD   = "${MYSQLPASS}"
 }
 
+withCredentials([string(credentialsId: 'tt-bot-token', variable: 'BOTTOKEN')]) {
+    BOT_TOKEN       = "${BOTTOKEN}"
+}
+
+withCredentials([string(credentialsId: 'tt-bot-chat', variable: 'BOTCHAT')]) {
+    BOT_CHAT        = "${BOTCHAT}"
+}
+
+BOT_URL             = "https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
+
 AGENT_LABEL    = "jenkins-ckdply01-1"
 
 
@@ -86,33 +96,6 @@ pipeline{
             }
         }
 
-        stage("Push image"){
-            steps{
-                script{
-                    def customImage = docker.image("${env.JOB_NAME}:v${env.BUILD_ID}")
-                    // customImage.push()
-                }
-            }
-        }
-
-        stage("Scanning"){
-            parallel{
-                stage("Scanning image"){
-                    steps{
-                        echo "Scanning image"
-                        sleep 10
-                    }
-                }
-
-                stage("Scanning source code"){
-                    steps{
-                        echo "Scanning source code"
-                        sleep 15
-                    }
-                }
-            }
-        }
-
         stage("Deploying new image "){
             steps{
                 script{
@@ -121,19 +104,17 @@ pipeline{
                 }
             }
         }
-
-        stage("Create Report"){
-            steps{
-                echo "Test"
-            }
-        }
     }
     post{
         success{
-            echo "Send notification"
+            sh """
+                curl -s -d 'chat_id=$BOT_CHAT\&disable_web_page_preview=1\&parse_mode=HTML\&text=' '<p style=\\'color: green\\'>\&#10004;</p><p> La ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} ha sinalizado con exito </p>' ${BOT_URL}
+            """
         }
         failure{
-            echo "Send notification"
+            sh """
+                curl -s --max-time 10 -d 'chat_id=$BOT_CHAT\&disable_web_page_preview=1\&parse_mode=HTML\&text=' '<p style=\\'color: red\\'>\&#10006;</p><p>Ocurrio un problema durante la ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} </p>' ${BOT_URL}
+            """
         }
     }
 }
