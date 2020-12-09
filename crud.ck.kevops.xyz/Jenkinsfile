@@ -108,7 +108,7 @@ pipeline{
     post{
         success{
             sh """
-                curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text=✅ La ejecución del Job: <b>${env.JOB_NAME}</b> numero <b>${env.BUILD_ID}</b> ha sinalizado con éxito ✅' ${BOT_URL}
+                curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text=✅ La ejecución del Job: <b>${env.JOB_NAME}</b> numero <b>${env.BUILD_ID}</b> ha finalizado con éxito ✅' ${BOT_URL}
             """
         }
         failure{
