@@ -64,7 +64,8 @@ pipeline{
         stage("Test"){
             steps{
                 sh """
-                    curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text="<p style=\\'color: green\\'>&#10004;</p><p> La ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} ha sinalizado con exito </p>"' ${BOT_URL}
+                    curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text="✅ La ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} ha sinalizado con éxito ✅"' ${BOT_URL}
+                    curl -s -d 'chat_id=$BOT_CHAT&disable_web_page_preview=1&parse_mode=HTML&text="🚨 Ocurrió un problema durante la ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} 🚨"' ${BOT_URL}
                 """
             }
         }
@@ -121,7 +122,7 @@ pipeline{
         }
         // failure{
         //     sh """
-        //         curl -s --max-time 10 -d 'chat_id=$BOT_CHAT\&disable_web_page_preview=1\&parse_mode=HTML\&text=' '<p style=\\'color: red\\'>\&#10006;</p><p>Ocurrio un problema durante la ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} </p>' ${BOT_URL}
+        //         curl -s --max-time 10 -d 'chat_id=$BOT_CHAT\&disable_web_page_preview=1\&parse_mode=HTML\&text=' '<p style=\\'color: red\\'>\&#10006;</p><p>Ocurrió un problema durante la ejecución del Job: ${env.JOB_NAME} numero ${env.BUILD_ID} </p>' ${BOT_URL}
         //     """
         // }
     }
