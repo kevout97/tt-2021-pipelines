@@ -32,7 +32,7 @@ GIT_PROYECT        = "tt-2021-crud"
 TT_CONTAINER       = "${env.JOB_NAME}"
 TT_DBDATABASE      = "tt-db"
 TT_DBPORT          = "3306"
-TT_PORT            = "8080"
+TT_PORT            = "8081"
 
 withCredentials([string(credentialsId: 'tt-mysql-host', variable: 'MYSQLHOST')]) {
     TT_DBHOST      = "${MYSQLHOST}"
